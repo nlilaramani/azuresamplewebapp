@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 650px;
+            margin: 40px auto;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        input { width: 65%; }
+        li { padding: 10px 0; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Task Manager</h1>
+
+    <p class="error" th:text="${error}"></p>
+
+    <form th:action="@{/tasks}" method="post">
+        <input type="text"
+               name="title"
+               placeholder="Enter a task"
+               maxlength="200"
+               required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <h2>Tasks</h2>
+
+    <p th:if="${#lists.isEmpty(tasks)}">
+        No tasks available.
+    </p>
+
+    <ul>
+        <li th:each="task : ${tasks}">
+            <span th:text="${task.title}"></span>
+
+            <form th:action="@{/tasks/{id}/delete(id=${task.id})}"
+                  method="post"
+                  style="display:inline">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
